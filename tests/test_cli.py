@@ -121,3 +121,12 @@ def test_rendering_fetches_nothing_outside_mermaid(tmp_path):
     finally:
         server.shutdown()
     assert hits == []
+
+
+@needs_runtime
+def test_search_finds_a_clean_order_for_the_k22_sample(tmp_path):
+    out = tmp_path / "out.mmd"
+    result = CliRunner().invoke(main, args=["search", str(SAMPLES / "crossing.mmd"), "-o", str(out), "--trials", "30", "--stop-at-zero"])
+    assert result.exit_code in (0, 1), result.output
+    assert "best:" in result.output
+    assert sorted(out.read_text().splitlines()) == sorted((SAMPLES / "crossing.mmd").read_text().splitlines())

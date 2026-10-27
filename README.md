@@ -65,6 +65,7 @@ any global Node or Chrome install.
 ```bash
 mermaid-comb solve diagram.mmd -o combed.mmd   # comb a flowchart
 mermaid-comb check diagram.mmd other.svg       # count crossings, edges under nodes, label collisions
+mermaid-comb search diagram.mmd -o best.mmd    # fallback: best of shuffled declaration orders
 mermaid-comb parity                            # verify the pinned Mermaid and the patch (see VENDORED.md)
 ```
 
@@ -80,10 +81,13 @@ mermaid-comb parity                            # verify the pinned Mermaid and t
 Exit codes, for `solve` and `check` alike: `0` no defects, `1` defects remain (for `solve`, the
 output is written), `2` unusable input or a failure (nothing written).
 
-The input must pin dagre in its front matter (`config: layout: dagre`) and be acyclic. Edges must
-have the form `A -->|label| B` (`-->`, `==>`, `-.->`, `---`, `~~~`, with or without a label). The
-tool refuses chained edges (`A --> B --> C`), `&` groups, nested subgraphs, two edges between
-the same pair of nodes, and edges to a subgraph; split or rewrite those first.
+`solve` needs dagre pinned in the front matter (`config: layout: dagre`) and an acyclic diagram.
+Edges must have the form `A -->|label| B` (`-->`, `==>`, `-.->`, `---`, `~~~`, with or without a
+label). It refuses chained edges (`A --> B --> C`), `&` groups, nested subgraphs, two edges
+between the same pair of nodes, and edges to a subgraph. For such a diagram, `search` renders
+`--trials` (default 100) seeded shuffles of the declaration order, each node and edge staying in
+its subgraph, and keeps the one with the fewest defects; it proves nothing, but it accepts
+anything except chained edges and `&` groups.
 
 ## How it works
 

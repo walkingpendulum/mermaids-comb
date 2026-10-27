@@ -13,6 +13,7 @@ from .layered_model import LayeredGraph
 from .pipeline import comb
 from .processes import OrderOracle, Renderer
 from .realiser import PreGraph
+from .search import search as search_orders
 from .svg_check import defects, problems, read_svg
 
 SAMPLES = Path(__file__).parent / "samples"
@@ -88,6 +89,28 @@ def renderer_for(files):
         return contextlib.nullcontext()
     installed = runtime_module.installed()
     return Renderer(installed, mermaid_dir=installed.pristine)
+
+
+@main.command()
+@click.argument("source", type=click.Path(exists=True, dir_okay=False, path_type=Path))
+@click.option("-o", "--out", required=True, type=click.Path(dir_okay=False, writable=True, path_type=Path), help="Where to write the best order found.")
+@click.option("--trials", default=100, show_default=True, type=click.IntRange(min=1), help="Shuffled declaration orders to render.")
+@click.option("--seed", default=1, show_default=True, type=int, help="Seed of the shuffle; the same seed gives the same result.")
+@click.option("--stop-at-zero", is_flag=True, help="Stop at the first order with no defects.")
+def search(source, out, trials, seed, stop_at_zero):
+    """Fallback for diagrams `solve` refuses: render shuffled declaration orders and keep the best."""
+    if not out.resolve().parent.is_dir():
+        fail(f"the directory of --out does not exist: {out.resolve().parent}")
+    log = clock()
+    try:
+        installed = runtime_module.installed()
+        with Renderer(installed, mermaid_dir=installed.pristine) as renderer:
+            count, best = search_orders(source.read_text(), renderer=renderer, trials=trials, seed=seed, stop_at_zero=stop_at_zero, log=log)
+        out.write_text(best)
+    except FAILURES as error:
+        fail(error)
+    log(f"best: {count} defects, written to {out}")
+    sys.exit(1 if count else 0)
 
 
 @main.command()

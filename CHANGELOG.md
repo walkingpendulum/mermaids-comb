@@ -10,6 +10,8 @@ First release.
   checked unchanged before writing.
 - `mermaid-comb check`: crossings, edges under nodes and edge-label collisions of a `.mmd` or
   `.svg`.
+- `mermaid-comb search`: the best of seeded shuffles of the declaration order, for diagrams
+  `solve` refuses.
 - `mermaid-comb setup`: installs Mermaid 11.16.0, dagre-d3-es 7.0.14, Puppeteer 25.2.1 and its
   headless Chrome into the user cache, and builds the traced Mermaid copy.
 - `mermaid-comb parity`: checks the traced copy against the pristine Mermaid and the order replay
