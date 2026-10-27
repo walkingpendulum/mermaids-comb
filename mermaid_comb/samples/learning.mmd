@@ -1,0 +1,47 @@
+---
+title: Learning platform — component diagram
+config:
+  layout: dagre
+  flowchart:
+    curve: basis
+---
+flowchart LR
+  subgraph RecipesG["Recipes: recipes-api and the storage it owns"]
+    RecipesApi["recipes-api"]
+    RecipesMedia[("S3 recipe-media<br/>published recipes")]
+  end
+  App["courses-app"]
+  Hook["webhook-relay"]
+  subgraph ApiG["courses-api and the storage it owns"]
+    Api["courses-api"]
+    Db[("PostgreSQL courses<br/>courses, progress, search index")]
+    Files[("S3 course-files<br/>videos, SCORM packages")]
+  end
+  Manager(["Team lead"])
+  Assistant["chat-assistant"]
+  Analytics["analytics-collector"]
+  Mcp["courses-mcp-server"]
+  McpAuth["mcp-auth-server"]
+  Sso["sso-service"]
+  Author(["Course author"])
+  Learner(["Learner"])
+  RecipesApi ==>|reads and writes published recipes in| RecipesMedia
+  Manager -->|assigns courses and reads progress in| App
+  Assistant -->|signs in through| McpAuth
+  App -->|downloads recipe PDFs, with URLs presigned by recipes-api, from| RecipesMedia
+  App -->|downloads videos, with URLs presigned by courses-api, from| Files
+  Mcp -->|verifies tokens with| McpAuth
+  Assistant -->|calls the MCP endpoint of| Mcp
+  Api -->|lists published recipes and gets presigned PDF URLs from| RecipesApi
+  App -->|reads and edits courses, enrollments and progress through| Api
+  Api -->|posts enrollment and due-date notifications to| Hook
+  Api ==>|reads and writes videos and SCORM packages in| Files
+  Author -->|uploads content and manages roles in| App
+  Mcp -->|searches and reads courses, and runs author tools, through| Api
+  Learner -->|searches courses through| Assistant
+  Api ==>|reads and writes courses, progress and search index in| Db
+  Api --->|signs users in through| Sso
+  App -->|sends usage events to| Analytics
+  Learner -->|takes courses in| App
+  style ApiG stroke:#888
+  style RecipesG stroke:#888

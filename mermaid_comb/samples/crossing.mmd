@@ -1,0 +1,13 @@
+---
+config:
+  layout: dagre
+---
+flowchart LR
+  Web["web-app"]
+  Mobile["mobile-app"]
+  Api["api"]
+  Sso["sso-service"]
+  Web -->|calls| Api
+  Mobile -->|calls| Api
+  Web -->|signs in through| Sso
+  Mobile -->|signs in through| Sso

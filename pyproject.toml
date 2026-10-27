@@ -1,0 +1,27 @@
+[tool.poetry]
+name = "mermaids-comb"
+version = "0.1.0"
+description = "Optimal edge layouts for Mermaid flowcharts: solve the layered drawing, then force Mermaid's dagre engine onto it"
+authors = ["walkingpendulum"]
+license = "MIT"
+readme = "README.md"
+repository = "https://github.com/walkingpendulum/mermaids-comb"
+packages = [{ include = "mermaid_comb" }]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+click = "^8.1"
+ortools = "9.15.6755"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.0"
+
+[tool.poetry.scripts]
+mermaid-comb = "mermaid_comb.cli:main"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

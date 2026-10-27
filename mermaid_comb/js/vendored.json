@@ -1,0 +1,7 @@
+{
+  "mermaid": "11.16.0",
+  "chunk": "chunks/mermaid.esm/chunk-T5XCKZAJ.mjs",
+  "anchor": "time2(\"    order\", () => order(g));",
+  "pristineSha256": "48219ef6bec401af331a2f8f819d61451ba7645d9b07532c4020c114bfcb4182",
+  "patchedSha256": "51f4ccb37582e3c5f694d00ea122fe40cda5f90ad1cda4a0aecbd641b48448a8"
+}

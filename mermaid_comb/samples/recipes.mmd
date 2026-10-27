@@ -1,0 +1,46 @@
+---
+title: Recipes platform — component diagram
+config:
+  layout: dagre
+  flowchart:
+    curve: basis
+---
+flowchart LR
+  Sso["sso-service"]
+  subgraph ApiG["recipes-api and its storage"]
+    Api["recipes-api"]
+    Media[("S3 recipe-media<br/>drafts, photos, PDFs")]
+    Db[("PostgreSQL recipes<br/>recipes, menus, events")]
+  end
+  Editor(["Editor"])
+  Analytics["analytics-collector"]
+  subgraph CoursesG["Courses"]
+    CoursesApi["courses-api"]
+    CoursesApp["courses-app"]
+  end
+  Reader(["Reader"])
+  Composer["newsletter-composer"]
+  Viewer["recipe-viewer"]
+  Picker["recipe-picker"]
+  Marketer(["Marketer"])
+  EditorApp["editor-app"]
+  CoursesApp -->|downloads recipe PDFs, with URLs presigned by recipes-api, from| Media
+  Viewer -->|looks up menus and records views through| Api
+  Composer -->|sends newsletters with recipe links to| Reader
+  Picker -->|signs in through| Sso
+  Reader -->|opens recipe links on| Viewer
+  Viewer -->|streams previews from, and presigns photos and PDFs of| Media
+  EditorApp -->|signs in through| Sso
+  Editor -->|uploads and publishes recipes in| EditorApp
+  Composer -->|embeds the picker of| Picker
+  CoursesApi -->|lists published recipes and gets presigned PDF URLs from| Api
+  EditorApp -->|forwards uploads, publishing and view queries to| Api
+  Picker -->|lists published recipes and creates menus through| Api
+  Marketer -->|copies recipe links from| Picker
+  Api -->|sends menu-created, view and download events to| Analytics
+  Api ==>|reads and writes drafts, recipes and menu snapshots in| Media
+  Api ==>|reads and writes recipes, menus and view events in| Db
+  Marketer -->|writes newsletters in| Composer
+  CoursesApp -->|reads and edits courses, enrollments and progress through| CoursesApi
+  style ApiG stroke:#888
+  style CoursesG stroke:#888

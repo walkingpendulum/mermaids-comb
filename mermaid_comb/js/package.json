@@ -1,0 +1,10 @@
+{
+  "name": "mermaid-comb-runtime",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "dagre-d3-es": "7.0.14",
+    "mermaid": "11.16.0",
+    "puppeteer": "25.2.1"
+  }
+}
