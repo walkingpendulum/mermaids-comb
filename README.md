@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="docs/mermaids-comb-logo.png" alt="Mermaid's Comb logo" width="240">
+</p>
+
 # Mermaid's Comb
 
 Mermaid's Comb rewrites a [Mermaid](https://mermaid.js.org) flowchart so that Mermaid's own
