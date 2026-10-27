@@ -1,6 +1,11 @@
 # Changelog
 
-## 0.1.0
+Versions follow [semantic versioning](https://semver.org): a minor release for new behaviour
+or a newer pinned Mermaid, a patch release for fixes only.
+
+## [Unreleased]
+
+## [0.1.0] - 2026-10-27
 
 First release.
 

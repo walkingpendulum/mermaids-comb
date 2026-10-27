@@ -55,6 +55,12 @@ uv tool install git+https://github.com/walkingpendulum/mermaids-comb
 mermaid-comb setup
 ```
 
+To install a fixed release instead of the latest `main`, add its tag:
+`uv tool install git+https://github.com/walkingpendulum/mermaids-comb@v0.1.0`. Releases, what
+changed in each, and the versioning rules are in [`CHANGELOG.md`](CHANGELOG.md). Run
+`mermaid-comb setup` after changing versions; it reuses the installed runtime when the release
+pins the same Mermaid.
+
 `setup` installs the pinned Mermaid, dagre-d3-es and Puppeteer with `npm ci`, downloads
 Puppeteer's pinned headless Chrome, and builds the traced Mermaid copy, all under
 `$XDG_CACHE_HOME/mermaid-comb` (default `~/.cache/mermaid-comb`, about 400 MB). It does not touch
