@@ -140,6 +140,8 @@ poetry run pytest
 ```
 
 [`VENDORED.md`](VENDORED.md) explains how to move to a newer Mermaid.
+Releases are cut with [`.claude/skills/release`](.claude/skills/release/SKILL.md), which
+both people and coding agents can follow.
 
 ## License
 
